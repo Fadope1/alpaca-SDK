@@ -8,7 +8,7 @@ import time
 
 stocks = ["TSLA", "NTES", "MSFT"]
 interval = 60 # interval time in seconds: minute data=60
-save_len = 5 # length of saved prices
+save_len = 200 # length of saved prices
 Key = config.key
 sKey = config.sKey
 
