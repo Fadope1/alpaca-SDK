@@ -1,0 +1,2 @@
+key = "yourKeyHere"
+sKey = "yourSecretKeyHere"
