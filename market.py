@@ -10,8 +10,8 @@ def is_open():
 
     remaining_time = 0 # time in seconds until market opens
     date = datetime.datetime.now()
-    open_time_date = datetime.datetime(date.year, date.month, date.day, 15, 30) # opens at 3:30pm
-    close_time_date = datetime.datetime(date.year, date.month, date.day, 22, 0) # closes at 10pm
+    open_time_date = datetime.datetime(date.year, date.month, date.day, 15, 30) # opens at 3:30pm for german timezone
+    close_time_date = datetime.datetime(date.year, date.month, date.day, 22, 0) # closes at 10pm for german timezone
     closed_days = ["Saturday", "Sunday"] # days, the stock exchange is closed
     day = date.strftime("%A")
 
