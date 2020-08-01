@@ -1,18 +1,8 @@
-import market
 import numpy as np
 import requests
-import datetime
-import config
 import talib
-import time
 
-stocks = ["DB", "TSLA", "MSFT"]
-interval = 60 # interval time in seconds: minute data=60
-save_len = 200 # length of saved prices
-Key = config.key
-sKey = config.sKey
-
-class _stock_ins:
+class stock_ins:
     BASE_URL = "https://paper-api.afrom market lpaca.markets"
     DATA_URL = "https://data.alpaca.markets"
 
@@ -53,46 +43,39 @@ class _stock_ins:
         return ind[::-1]
 
     def order(self, data):
-        '''   example data
-        data = {
-            "side": "buy/sell",
-            "symbol": self.stock_name,
-            "type": "market",
-            "qty": "0-...",
-            "time_in_force": "gtc",
-            "order_class": "bracket",
-            "take_profit": {
-              "limit_price": "301"
-            },
-            "stop_loss": {
-              "stop_price": "299",
-              "limit_price": "298.5"
-            }
-            }from market
-        '''
         return requests.post("{}/v2/orders".format(self.BASE_URL), json=data, headers=self.HEADERS)
 
-stock_list = []
-for stock in stocks:
-    stock_list.append(_stock_ins(stock, save_len, Key, sKey))
+if __name__ == "__main__":
+    import config
+    import time
 
-while True:
-    if market.is_open():
-        start_timer = time.time()
-        for stock in stock_list:
-            stock.update() # this will update the bid and ask price
+    stocks = ["DB", "TSLA", "MSFT"]
+    interval = 60 # interval time in seconds: minute data=60
+    save_len = 200 # length of saved prices
+    Key = config.key
+    sKey = config.sKey
 
-            data = {
-                "side": "buy",
-                "symbol": stock.stock_name,
-                "type": "market",
-                "qty": "1",
-                "time_in_force": "gtc",
-            } # settings for order: order type etc.
-            # print(stock.order(data)) # this will order a stock with json=data
+    stock_list = []
+    for stock in stocks:
+        stock_list.append(stock_ins(stock, save_len, Key, sKey))
 
-            print(stock.ask_data[0], stock.ask_data[0], len(stock.ask_data))
+    while True:
+        if market.is_open():
+            start_timer = time.time()
+            for stock in stock_list:
+                stock.update() # this will update the bid and ask price
 
-        sleep_time = interval - (time.time()-start_timer)
-        print("Waiting {:.2f}".format(sleep_time))
-        time.sleep(sleep_time)
+                data = {
+                    "side": "buy",
+                    "symbol": stock.stock_name,
+                    "type": "market",
+                    "qty": "1",
+                    "time_in_force": "gtc",
+                } # settings for order: order type etc.
+                # print(stock.order(data)) # this will order a stock with json=data
+
+                print(stock.ask_data[0], stock.ask_data[0], len(stock.ask_data))
+
+            sleep_time = interval - (time.time()-start_timer)
+            print("Waiting {:.2f}".format(sleep_time))
+            time.sleep(sleep_time)
