@@ -1,11 +1,7 @@
-import numpy as np
-import requests
-import datetime
+import baseStrategy
 import config
 import market
-import talib
 import time
-import base
 
 stocks = ["TSLA", "NTES", "MSFT"]
 interval = 60 # interval time in seconds: minute data=60
@@ -16,6 +12,14 @@ sKey = config.sKey
 stock_list = []
 for stock in stocks:
     stock_list.append(base.stock_ins(stock, save_len, Key, sKey))
+
+data = {
+    "side": None,
+    "symbol": stock.stock_name,
+    "type": "market",
+    "qty": "1",
+    "time_in_force": "gtc",
+}
 
 while True:
     if market.is_open():
@@ -31,24 +35,21 @@ while True:
                 current_ema = ema200[0]
                 last_ema = ema200[-5]
 
-                print("Current price: {} | current ema: {}".format(current_price, current_ema))
+                print("Current price: {} | Current ema: {}".format(current_price, current_ema))
+                print("Last price: {} | Last ema: {}".format(last_price, last_ema))
 
-                data = {
-                    "side": None,
-                    "symbol": stock.stock_name,
-                    "type": "market",
-                    "qty": "1",
-                    "time_in_force": "gtc",
-                }
+                data["side"] = None
 
                 if last_ema < last_price:
                     if current_ema > current_price:
                         # buy
                         data["side"] = "buy"
+                        print("buying")
                 elif last_ema > last_price:
                     if current_ema < current_price:
                         # sell
                         data["side"] = "sell"
+                        print("selling")
 
                 if data["side"] is not None:
                     stock.order(data)
