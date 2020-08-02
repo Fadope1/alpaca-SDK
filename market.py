@@ -6,7 +6,7 @@ def pause_program(pause_until):
     pause.until(pause_until)
 
 def is_open():
-    # this function will return true if the market is currently open else false
+    # this function will return true if the market is currently open else false. If false it will wait until next opening time
 
     remaining_time = 0 # time in seconds until market opens
     date = datetime.datetime.now()
