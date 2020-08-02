@@ -11,11 +11,11 @@ sKey = config.sKey
 
 stock_list = []
 for stock in stocks:
-    stock_list.append(base.stock_ins(stock, save_len, Key, sKey))
+    stock_list.append(baseStrategy.stock_ins(stock, save_len, Key, sKey))
 
 data = {
     "side": None,
-    "symbol": stock.stock_name,
+    "symbol": None,
     "type": "market",
     "qty": "1",
     "time_in_force": "gtc",
@@ -39,6 +39,7 @@ while True:
                 print("Last price: {} | Last ema: {}".format(last_price, last_ema))
 
                 data["side"] = None
+                data["symbol"] = stock.stock_name
 
                 if last_ema < last_price:
                     if current_ema > current_price:
