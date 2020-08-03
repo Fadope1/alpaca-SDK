@@ -3,7 +3,7 @@ import requests
 import talib
 
 class stock_ins:
-    BASE_URL = "https://paper-api.afrom market lpaca.markets"
+    BASE_URL = "https://paper-api.alpaca.markets"
     DATA_URL = "https://data.alpaca.markets"
 
     def __init__(self, stock_name, save_len, api_key, secret_key):
