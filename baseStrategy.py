@@ -39,9 +39,9 @@ class stock_ins:
         else:
             data = data[::-1]
         if perdiod_len is None:
-            ind = gettatr(talib, ind)(data)
+            ind = getattr(talib, ind)(data)
         else:
-            ind = gettatr(talib, ind)(data, perdiod_len)
+            ind = getattr(talib, ind)(data, perdiod_len)
         return ind[::-1]
 
     def order(self, data):
