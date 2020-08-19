@@ -32,16 +32,16 @@ class stock_ins:
         self.bid_data.insert(0, bid)
         self.ask_data.insert(0, ask)
 
-    def get_indicator(self, ind, *, perdiod_len=None, data=None):
+    def get_indicator(self, ind, *, period_len=None, data=None):
         # this will return any indicator available in talib in right format
         if data is None:
             data = np.array(self.ask_data)[::-1]
         else:
             data = data[::-1]
-        if perdiod_len is None:
+        if period_len is None:
             ind = getattr(talib, ind)(data)
         else:
-            ind = getattr(talib, ind)(data, perdiod_len)
+            ind = getattr(talib, ind)(data, period_len)
         return ind[::-1]
 
     def order(self, data):
