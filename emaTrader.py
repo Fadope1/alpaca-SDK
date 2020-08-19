@@ -5,7 +5,9 @@ import time
 
 stocks = ["TSLA", "NTES", "MSFT"]
 interval = 60 # interval time in seconds: minute data=60
-save_len = 200 # length of saved prices
+period_len = 200 # indicator length
+last_nr = 2 # last nr to compare current stats
+save_len = period_len + last_nr
 Key = config.key
 sKey = config.sKey
 
@@ -28,12 +30,12 @@ while True:
             stock.update() # this will update the bid and ask price
 
             if len(stock.ask_data) >= save_len:
-                ema200 = stock.get_indicator(ind="EMA", perdiod_len=save_len)
+                ema200 = stock.get_indicator(ind="EMA", perdiod_len=period_len)
 
                 current_price = stock.ask_data[0]
-                last_price = stock.ask_data[-5]
+                last_price = stock.ask_data[last_nr]
                 current_ema = ema200[0]
-                last_ema = ema200[-5]
+                last_ema = ema200[last_nr]
 
                 print("Current price: {} | Current ema: {}".format(current_price, current_ema))
                 print("Last price: {} | Last ema: {}".format(last_price, last_ema))
