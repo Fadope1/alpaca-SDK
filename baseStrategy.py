@@ -34,10 +34,9 @@ class stock_ins:
 
     def get_indicator(self, ind, *, period_len=None, data=None):
         # this will return any indicator available in talib in right format
-        if data is None:
-            data = np.array(self.ask_data)[::-1]
-        else:
-            data = data[::-1]
+        data = self.ask_data if data is None else data
+        data = np.array(data, dtype="doube")[::-1]
+          
         if period_len is None:
             ind = getattr(talib, ind)(data)
         else:
@@ -48,8 +47,10 @@ class stock_ins:
         return requests.post("{}/v2/orders".format(self.BASE_URL), json=data, headers=self.HEADERS)
 
 if __name__ == "__main__":
+    # test run, if everything is working
     import config
     import time
+    import market
 
     stocks = ["DB", "TSLA", "MSFT"]
     interval = 60 # interval time in seconds: minute data=60
@@ -67,6 +68,8 @@ if __name__ == "__main__":
             for stock in stock_list:
                 stock.update() # this will update the bid and ask price
 
+                print(stock.get_indicator("EMA", period_len=2, data=[1, 2, 3, 4, 5]))
+                
                 data = {
                     "side": "buy",
                     "symbol": stock.stock_name,
