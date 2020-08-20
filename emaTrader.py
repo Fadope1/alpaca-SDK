@@ -30,7 +30,7 @@ while True:
             stock.update() # this will update the bid and ask price
 
             if len(stock.ask_data) >= save_len:
-                ema200 = stock.get_indicator(ind="EMA", perdiod_len=period_len)
+                ema200 = stock.get_indicator(ind="EMA", period_len=period_len)
 
                 current_price = stock.ask_data[0]
                 last_price = stock.ask_data[last_nr]
