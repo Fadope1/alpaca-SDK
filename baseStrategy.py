@@ -35,7 +35,7 @@ class stock_ins:
     def get_indicator(self, ind, *, period_len=None, data=None):
         # this will return any indicator available in talib in right format
         data = self.ask_data if data is None else data
-        data = np.array(data, dtype="doube")[::-1]
+        data = np.array(data, dtype="double")[::-1]
           
         if period_len is None:
             ind = getattr(talib, ind)(data)
