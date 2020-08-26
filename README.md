@@ -8,6 +8,10 @@ None detected
 Currently implementet:
 - ema Strategy (currently being testet on a paper-trading-account with 10k start cash)
 
-Planned:
+Planned Strategies:
 - MACD Strategy
 - boolinger-bands Strategy
+
+Planned updates:
+- Master branch is the package itself, every strategy should then be a sub branch
+- Better analysis for testing Strategies -> matplotlib
