@@ -14,18 +14,11 @@ class stock_ins:
 
         self.HEADERS = {'APCA-API-KEY-ID': api_key, 'APCA-API-SECRET-KEY': secret_key}
 
-    def request_handler(request, request_type="get"):
-        try:
-            return getattr(requests, request_type)(request)
-        except:
-            print("Type: {}; Request: {}; Request couldn't be filled".format(request_type, request))
-            return
-        
     def __get_bid(self):
-        return self.request_handler((("{}/v1/last/stocks/{}".format(self.DATA_URL, self.stock_name), headers=self.HEADERS).json()["last"]["price"]))
+        return requests.get("{}/v1/last/stocks/{}".format(self.DATA_URL, self.stock_name), headers=self.HEADERS).json()["last"]["price"]
 
     def __get_ask(self):
-        return self.request_handler((("{}/v1/last_quote/stocks/{}".format(self.DATA_URL, self.stock_name), headers=self.HEADERS).json()["last"]["askprice"]))
+        return requests.get("{}/v1/last_quote/stocks/{}".format(self.DATA_URL, self.stock_name), headers=self.HEADERS).json()["last"]["askprice"]
 
     def update(self):
         # this will get new bid and ask data and resize it
@@ -51,7 +44,7 @@ class stock_ins:
         return ind[::-1]
 
     def order(self, data):
-        return self.request_handler((("{}/v2/orders".format(self.BASE_URL), json=data, headers=self.HEADERS), post)
+        return requests.post("{}/v2/orders".format(self.BASE_URL), json=data, headers=self.HEADERS)
 
 if __name__ == "__main__":
     # test run, if everything is working
