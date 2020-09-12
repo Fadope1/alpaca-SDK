@@ -14,18 +14,21 @@ class stock_ins:
 
         self.HEADERS = {'APCA-API-KEY-ID': api_key, 'APCA-API-SECRET-KEY': secret_key}
 
-    def request_handler(request, request_type="get"):
+    def request_handler(self, url, json_data=None, request_type="get", attr=None):
         try:
-            return getattr(requests, request_type)(request)
-        except:
-            print("Type: {}; Request: {}; Request couldn't be filled".format(request_type, request))
-            return
-        
+            request = getattr(requests, request_type)(url, headers=self.HEADERS, json=json_data)
+            if attr: # not None
+                return request.json()["last"][attr]
+            return request
+        except Exception as e:
+            print("Type: {}; Request_url: {}; Request couldn't be filled. Exception: {}".format(request_type, url, e))
+            return None
+
     def __get_bid(self):
-        return self.request_handler((("{}/v1/last/stocks/{}".format(self.DATA_URL, self.stock_name), headers=self.HEADERS).json()["last"]["price"]))
+        return self.request_handler("{}/v1/last/stocks/{}".format(self.DATA_URL, self.stock_name), attr="price")
 
     def __get_ask(self):
-        return self.request_handler((("{}/v1/last_quote/stocks/{}".format(self.DATA_URL, self.stock_name), headers=self.HEADERS).json()["last"]["askprice"]))
+        return self.request_handler("{}/v1/last_quote/stocks/{}".format(self.DATA_URL, self.stock_name), attr="askprice")
 
     def update(self):
         # this will get new bid and ask data and resize it
@@ -43,7 +46,7 @@ class stock_ins:
         # this will return any indicator available in talib in right format
         data = self.ask_data if data is None else data
         data = np.array(data, dtype="double")[::-1]
-          
+
         if period_len is None:
             ind = getattr(talib, ind)(data)
         else:
@@ -51,7 +54,7 @@ class stock_ins:
         return ind[::-1]
 
     def order(self, data):
-        return self.request_handler((("{}/v2/orders".format(self.BASE_URL), json=data, headers=self.HEADERS), post)
+        return self.request_handler("{}/v2/orders".format(self.BASE_URL), json_data=data, request_type="post")
 
 if __name__ == "__main__":
     # test run, if everything is working
@@ -76,7 +79,7 @@ if __name__ == "__main__":
                 stock.update() # this will update the bid and ask price
 
                 print(stock.get_indicator("EMA", period_len=2, data=[1, 2, 3, 4, 5]))
-                
+
                 data = {
                     "side": "buy",
                     "symbol": stock.stock_name,
