@@ -27,9 +27,9 @@ while True:
     if market.is_open():
         start_timer = time.time()
         for stock in stock_list:
-            stock.update() # this will update the bid and ask price
+            update = stock.update() # this will update the bid and ask price
 
-            if len(stock.ask_data) >= save_len:
+            if len(stock.ask_data) >= save_len and not update:
                 ema200 = stock.get_indicator(ind="EMA", period_len=period_len)
 
                 current_price = stock.ask_data[0]
