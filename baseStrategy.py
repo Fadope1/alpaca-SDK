@@ -41,6 +41,9 @@ class stock_ins:
 
         self.bid_data.insert(0, bid)
         self.ask_data.insert(0, ask)
+        
+        if not bid or not ask:
+            return None
 
     def get_indicator(self, ind, *, period_len=None, data=None):
         # this will return any indicator available in talib in right format
