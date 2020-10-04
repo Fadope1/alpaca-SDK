@@ -13,5 +13,6 @@ Planned Strategies:
 - boolinger-bands Strategy
 
 Planned updates:
+- Planning on adding support for lemon.markets
 - Master branch is the package itself, every strategy should then be a sub branch
 - Better analysis for testing Strategies -> matplotlib
